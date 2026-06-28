@@ -383,6 +383,7 @@ LOCAL_CFLAGS += -DHAVE_OPENGL
 LOCAL_CFLAGS += -DHAVE_OPENGL_ES_1
 LOCAL_CFLAGS += -DHAVE_OPENGL_ES_2
 LOCAL_CFLAGS += -fvisibility=hidden
+LOCAL_LDFLAGS := -ffunction-sections -fdata-sections
 include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
@@ -393,6 +394,8 @@ LOCAL_SRC_FILES := \
     main.c \
     glformats.c \
     basevertex.c \
+    blending.c \
+    query.c \
     shader_wrapper.c \
     string_utils.c \
     framebuffer.c \
@@ -402,9 +405,13 @@ LOCAL_SRC_FILES := \
     vertexattrib.c \
     swizzle.c \
     license_notice.c \
+    env.c \
     vgpu_shaderconv/shaderconv.c \
     unordered_map/unordered_map.c \
     unordered_map/int_hash.c
 LOCAL_STATIC_LIBRARIES := glsl_optimizer
-LOCAL_LDLIBS := -llog -lEGL
+LOCAL_LDFLAGS := -ffunction-sections -fdata-sections -Wl,--version-script=$(LOCAL_PATH)/version.script
+# Comment for debugging
+LOCAL_LDFLAGS += -flto -Wl,--gc-sections
+LOCAL_LDLIBS := -llog
 include $(BUILD_SHARED_LIBRARY)

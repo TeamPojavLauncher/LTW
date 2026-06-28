@@ -1,6 +1,6 @@
 /**
  * Created by: artDev
- * Copyright (c) 2025 artDev, SerpentSpirale, PojavLauncherTeam, Digital Genesis LLC.
+ * Copyright (c) 2025 artDev, SerpentSpirale, CADIndie.
  * For use under LGPL-3.0
  */
 
@@ -23,6 +23,15 @@ typedef struct {
     bool ready;
     GLuint indirectRenderBuffer;
 } basevertex_renderer_t;
+
+typedef struct {
+    bool available;
+    PFNGLBLENDEQUATIONIPROC blendequationi;
+    PFNGLBLENDEQUATIONSEPARATEIPROC blendequationseparatei;
+    PFNGLBLENDFUNCIPROC blendfunci;
+    PFNGLBLENDFUNCSEPARATEIPROC blendfuncseparatei;
+    PFNGLCOLORMASKIPROC colormaski;
+} blending_functions_t;
 
 typedef struct {
     GLuint index;
@@ -60,9 +69,11 @@ typedef struct {
 typedef struct {
     EGLContext phys_context;
     bool context_rdy;
-    bool es31, es32, buffer_storage;
+    bool es31, es32, buffer_storage, buffer_texture_ext, multidraw_indirect, timer_query;
     GLint shader_version;
     basevertex_renderer_t basevertex;
+    PFNGLDRAWELEMENTSBASEVERTEXPROC drawelementsbasevertex;
+    blending_functions_t blending;
     GLuint multidraw_element_buffer;
     framebuffer_copier_t framebuffer_copier;
     unordered_map* shader_map;
